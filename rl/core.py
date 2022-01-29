@@ -124,13 +124,14 @@ class Agent:
         min_max_num_steps = nb_min_val_max_episode_steps
         
         try:
-            while self.step < nb_steps:
-                if(nb_max_episode_steps and nb_min_val_max_episode_steps):
-                    a = -(max_num_steps - min_max_num_steps) / nb_steps
-                    b = max_num_steps
-                    nb_max_episode_steps = max(min_max_num_steps, a * self.step + b)
-                
+            while self.step < nb_steps:               
                 if observation is None:  # start of a new episode
+                    # Linear anneal max episode steps value
+                    if(nb_max_episode_steps and nb_min_val_max_episode_steps):
+                        a = -(max_num_steps - min_max_num_steps) / nb_steps
+                        b = max_num_steps
+                        nb_max_episode_steps = max(min_max_num_steps, round(a * self.step + b))
+                    
                     callbacks.on_episode_begin(episode)
                     episode_step = np.int16(0)
                     episode_reward = np.float32(0)
