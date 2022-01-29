@@ -21,8 +21,27 @@ def mean_q(y_true, y_pred):
 # http://arxiv.org/pdf/1509.02971v2.pdf
 # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.646.4324&rep=rep1&type=pdf
 class DDPGAgent(Agent):
-    """Write me
     """
+    # Arguments
+        actor__: A Keras actor model.
+        critic__: A Keras critic model.
+
+        memory
+        gamma
+        batch_size
+        nb_steps_warmup_critic
+        nb_steps_warmup_actor
+        train_interval
+        memory_interval
+
+        custom_model_objects
+        target_model_update
+
+        critic_action_input__: 
+        delta_clip__:
+        random_process__: Sample noise from a correlated normal distribution.
+    """
+
     def __init__(self, nb_actions, actor, critic, critic_action_input, memory,
                  gamma=.99, batch_size=32, nb_steps_warmup_critic=1000, nb_steps_warmup_actor=1000,
                  train_interval=1, memory_interval=1, delta_range=None, delta_clip=np.inf,

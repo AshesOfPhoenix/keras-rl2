@@ -51,7 +51,7 @@ class Agent:
 
     def fit(self, env, nb_steps, action_repetition=1, callbacks=None, verbose=1,
             visualize=False, nb_max_start_steps=0, start_step_policy=None, log_interval=10000,
-            nb_max_episode_steps=None):
+            nb_max_episode_steps=None, nb_min_val_max_episode_steps=None):
         """Trains the agent on the given environment.
 
         # Arguments
@@ -119,8 +119,17 @@ class Agent:
         episode_reward = None
         episode_step = None
         did_abort = False
+        
+        max_num_steps = nb_max_episode_steps
+        min_max_num_steps = nb_min_val_max_episode_steps
+        
         try:
             while self.step < nb_steps:
+                if(nb_max_episode_steps and nb_min_val_max_episode_steps):
+                    a = -(max_num_steps - min_max_num_steps) / nb_steps
+                    b = max_num_steps
+                    nb_max_episode_steps = max(min_max_num_steps, a * self.step + b)
+                
                 if observation is None:  # start of a new episode
                     callbacks.on_episode_begin(episode)
                     episode_step = np.int16(0)
