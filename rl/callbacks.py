@@ -286,12 +286,12 @@ class TrainIntervalLogger(Callback):
                 print(f'{len(self.episode_rewards)} episodes - episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
-            self.reset()
-            
             if(np.mean(self.episode_rewards) > self.best_episode_mean):
                 self.best_episode_mean = np.mean(self.episode_rewards)
             
-            print(f'|| Best episode_reward mean per iterval so far: {self.best_episode_mean:.3f}                                                   ||')
+            self.reset()
+           
+            print(f'|| Best episode_reward mean per iterval so far: {self.best_episode_mean:.3f}                                                          ||')
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
