@@ -291,7 +291,7 @@ class TrainIntervalLogger(Callback):
             
             self.reset()
            
-            print(f'|| Best episode_reward mean per iterval so far: {mean:.3f}                                                          ||'.format(mean=self.best_episode_mean))
+            print('|| Best episode_reward mean per iterval so far: {mean:.3f}                                                          ||'.format(mean=self.best_episode_mean))
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
