@@ -207,7 +207,7 @@ class TrainEpisodeLogger(Callback):
         }
         if(self.output_to_file):
             self.buffer.append(template.format(**variables))
-            if self.buffer_interval is not None and self.step % self.buffer_interval == 0:
+            if self.step % self.buffer_interval == 0:
                 for i in self.buffer:
                     self.f.write(i)
                 self.buffer.clear()
@@ -280,12 +280,12 @@ class TrainIntervalLogger(Callback):
                             formatted_infos += f' - {name}: {mean:.3f}'
    
                 print(f'{len(self.episode_rewards)} episodes - episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
-                print("\\                                                                                                                                                / ")                                                                                           
-                print("/\-----------------------------------------------------------------------------------------------------------------------------------------------/\\")
+                print("\\                                                                                                               / ")                                                                                        
+                print("/\-------------------------------------------------------------------------------------------------------------/\\")
             self.reset()
             print("")
-            print("\/-----------------------------------------------------------------------------------------------------------------------------------------------\/")
-            print("/                                                                                                                                                 \\")
+            print("\/-------------------------------------------------------------------------------------------------------------\/")
+            print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
                                                                                                                                                                      
     def on_step_end(self, step, logs):
