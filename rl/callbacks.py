@@ -116,7 +116,7 @@ class TestLogger(Callback):
 
 
 class TrainEpisodeLogger(Callback):
-    def __init__(self, output_to_file=False, filename="extensive_logs.txt"):
+    def __init__(self, output_to_file=False, buffer_interval=5000, filename="extensive_logs.txt"):
         # Some algorithms compute multiple episodes at once since they are multi-threaded.
         # We therefore use a dictionary that is indexed by the episode to separate episodes
         # from each other.
@@ -132,6 +132,8 @@ class TrainEpisodeLogger(Callback):
         # If output_to_file is True, output to specfied file instead of printing
         if(self.output_to_file):
             self.f = open(self.filename, "a")
+            self.buffer = []
+            self.buffer_interval = buffer_interval
 
     def on_train_begin(self, logs):
         """ Print training values at beginning of training """
@@ -186,7 +188,7 @@ class TrainEpisodeLogger(Callback):
         metrics_text = metrics_template.format(*metrics_variables)
 
         nb_step_digits = str(int(np.ceil(np.log10(self.params['nb_steps']))) + 1)
-        template = '{step: ' + nb_step_digits + 'd}/{nb_steps}: episode: {episode}, duration: {duration:.3f}s, episode steps: {episode_steps:3}, steps per second: {sps:3.0f}, episode reward: {episode_reward:6.3f}, mean reward: {reward_mean:6.3f} [{reward_min:6.3f}, {reward_max:6.3f}], mean action: {action_mean:.3f} [{action_min:.3f}, {action_max:.3f}],  {metrics}'
+        template = '{step: ' + nb_step_digits + 'd}/{nb_steps}: episode: {episode}, duration: {duration:.3f}s, episode steps: {episode_steps:3}, steps per second: {sps:3.0f}, episode reward: {episode_reward:6.3f}, mean reward: {reward_mean:6.3f} [{reward_min:6.3f}, {reward_max:6.3f}], mean action: {action_mean:.3f} [{action_min:.3f}, {action_max:.3f}],  {metrics}\n'
         variables = {
             'step': self.step,
             'nb_steps': self.params['nb_steps'],
@@ -204,8 +206,11 @@ class TrainEpisodeLogger(Callback):
             'metrics': metrics_text
         }
         if(self.output_to_file):
-            self.f.write(template.format(**variables))
-            self.f.write("\n")
+            self.buffer.append(template.format(**variables))
+            if(self.step % self.buffer_interval):
+                for i in self.buffer:
+                    self.f.write(i)
+                self.buffer.clear()
         else:
             print(template.format(**variables))
 
@@ -275,12 +280,12 @@ class TrainIntervalLogger(Callback):
                             formatted_infos += f' - {name}: {mean:.3f}'
    
                 print(f'{len(self.episode_rewards)} episodes - episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
-                print(" |                                                                                                                                               | ")                                                                                           
+                print("\\                                                                                                                                                / ")                                                                                           
                 print("/\-----------------------------------------------------------------------------------------------------------------------------------------------/\\")
             self.reset()
             print("")
             print("\/-----------------------------------------------------------------------------------------------------------------------------------------------\/")
-            print(" |                                                                                                                                                |")
+            print("/                                                                                                                                                 \\")
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
                                                                                                                                                                      
     def on_step_end(self, step, logs):
