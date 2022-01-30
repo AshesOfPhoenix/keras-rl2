@@ -283,7 +283,7 @@ class TrainIntervalLogger(Callback):
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
             self.reset()
-            print("")
+            print("||                                                                                                             ||")
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
