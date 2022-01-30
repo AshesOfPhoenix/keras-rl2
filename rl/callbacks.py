@@ -275,12 +275,12 @@ class TrainIntervalLogger(Callback):
                             formatted_infos += f' - {name}: {mean:.3f}'
    
                 print(f'{len(self.episode_rewards)} episodes - episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
-                print(" ^                                                                                                                                               ^ ")                                                                                           
+                print(" |                                                                                                                                               | ")                                                                                           
                 print("/\-----------------------------------------------------------------------------------------------------------------------------------------------/\\")
             self.reset()
             print("")
             print("\/-----------------------------------------------------------------------------------------------------------------------------------------------\/")
-            print(" ˇ                                                                                                                                                ˇ")
+            print(" |                                                                                                                                                |")
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
                                                                                                                                                                      
     def on_step_end(self, step, logs):
