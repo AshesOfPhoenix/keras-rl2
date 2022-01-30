@@ -139,7 +139,7 @@ class TrainEpisodeLogger(Callback):
         self.metrics_names = self.model.metrics_names
         
         if(self.output_to_file):         
-            self.f.write(f"Training for {self.params['nb_steps']} steps ...")
+            self.f.write(f"Training for {self.params['nb_steps']} steps ...\n")
         else:
             print(f"Training for {self.params['nb_steps']} steps ...")
         
@@ -148,7 +148,7 @@ class TrainEpisodeLogger(Callback):
         duration = timeit.default_timer() - self.train_start
         
         if(self.output_to_file): 
-            self.f.write(f'done, took {duration:.3f} seconds')
+            self.f.write(f'done, took {duration:.3f} seconds\n')
             self.f.close()
         else:
             print(f'done, took {duration:.3f} seconds')
@@ -205,6 +205,7 @@ class TrainEpisodeLogger(Callback):
         }
         if(self.output_to_file):
             self.f.write(template.format(**variables))
+            self.f.write("\n")
         else:
             print(template.format(**variables))
 
