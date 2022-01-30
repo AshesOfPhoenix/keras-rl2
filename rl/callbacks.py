@@ -207,7 +207,7 @@ class TrainEpisodeLogger(Callback):
         }
         if(self.output_to_file):
             self.buffer.append(template.format(**variables))
-            if(self.step % self.buffer_interval):
+            if self.buffer_interval is not None and self.step % self.buffer_interval == 0:
                 for i in self.buffer:
                     self.f.write(i)
                 self.buffer.clear()
