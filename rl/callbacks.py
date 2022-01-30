@@ -236,6 +236,7 @@ class TrainIntervalLogger(Callback):
         self.interval = interval
         self.step = 0
         self.reset()
+        self.best_episode_mean = 0
 
     def reset(self):
         """ Reset statistics """
@@ -250,7 +251,10 @@ class TrainIntervalLogger(Callback):
         """ Initialize training statistics at beginning of training """
         self.train_start = timeit.default_timer()
         self.metrics_names = self.model.metrics_names
+        print("|===============================================================================================================|")
         print(f"Training for {self.params['nb_steps']} steps ...")
+        print("_________________________________________________________________________________________________________________")
+        print("||                                                                                                             ||")
 
     def on_train_end(self, logs):
         """ Print training duration at end of training """
@@ -283,7 +287,11 @@ class TrainIntervalLogger(Callback):
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
             self.reset()
-            print("||                                                                                                             ||")
+            
+            if(np.mean(self.episode_rewards) > self.best_episode_mean):
+                self.best_episode_mean = np.mean(self.episode_rewards)
+            
+            print(f'|| Best episode_reward mean per iterval so far: {self.best_episode_mean:.3f}                                                   ||')
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
