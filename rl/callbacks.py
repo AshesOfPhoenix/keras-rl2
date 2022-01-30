@@ -116,7 +116,7 @@ class TestLogger(Callback):
 
 
 class TrainEpisodeLogger(Callback):
-    def __init__(self):
+    def __init__(self, output_to_file=False, filename="extensive_logs.txt"):
         # Some algorithms compute multiple episodes at once since they are multi-threaded.
         # We therefore use a dictionary that is indexed by the episode to separate episodes
         # from each other.
@@ -126,17 +126,33 @@ class TrainEpisodeLogger(Callback):
         self.actions = {}
         self.metrics = {}
         self.step = 0
+        self.output_to_file = output_to_file
+        self.filename = filename
+        
+        # If output_to_file is True, output to specfied file instead of printing
+        if(self.output_to_file):
+            self.f = open(self.filename, "a")
 
     def on_train_begin(self, logs):
         """ Print training values at beginning of training """
         self.train_start = timeit.default_timer()
         self.metrics_names = self.model.metrics_names
-        print(f"Training for {self.params['nb_steps']} steps ...")
+        
+        if(self.output_to_file):         
+            self.f.write(f"Training for {self.params['nb_steps']} steps ...")
+        else:
+            print(f"Training for {self.params['nb_steps']} steps ...")
         
     def on_train_end(self, logs):
         """ Print training time at end of training """
         duration = timeit.default_timer() - self.train_start
-        print(f'done, took {duration:.3f} seconds')
+        
+        if(self.output_to_file): 
+            self.f.write(f'done, took {duration:.3f} seconds')
+            self.f.close()
+        else:
+            print(f'done, took {duration:.3f} seconds')
+            
 
     def on_episode_begin(self, episode, logs):
         """ Reset environment variables at beginning of each episode """
@@ -187,7 +203,10 @@ class TrainEpisodeLogger(Callback):
             'action_max': np.max(self.actions[episode]),
             'metrics': metrics_text
         }
-        print(template.format(**variables))
+        if(self.output_to_file):
+            self.f.write(template.format(**variables))
+        else:
+            print(template.format(**variables))
 
         # Free up resources.
         del self.episode_start[episode]
