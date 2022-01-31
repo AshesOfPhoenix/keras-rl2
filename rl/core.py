@@ -131,6 +131,8 @@ class Agent:
                         a = -(max_num_steps - min_max_num_steps) / nb_steps
                         b = max_num_steps
                         nb_max_episode_steps = max(min_max_num_steps, round(a * self.step + b))
+                    if hasattr(env, '_max_episode_steps'):
+                        env._max_episode_steps = nb_max_episode_steps                    
                     
                     callbacks.on_episode_begin(episode)
                     episode_step = np.int16(0)
