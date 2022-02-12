@@ -128,7 +128,7 @@ class Agent:
                 if observation is None:  # start of a new episode
                     # Linear anneal max episode steps value
                     if(nb_max_episode_steps and nb_min_val_max_episode_steps):
-                        a = -(max_num_steps - min_max_num_steps) / nb_steps
+                        a = -(max_num_steps - min_max_num_steps) / (nb_steps * 0.8)
                         b = max_num_steps
                         nb_max_episode_steps = max(min_max_num_steps, round(a * self.step + b))
                     if hasattr(env, '_max_episode_steps'):
