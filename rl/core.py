@@ -217,6 +217,10 @@ class Agent:
                 episode_step += 1
                 self.step += 1
 
+                # If _reset_car_position_steps is not None, mark env to reset position next time reset() is called
+                if (env._reset_car_position_steps is not None) and (self.step % env._reset_car_position_steps == 0):
+                    env.reset_pos_next_ep = True
+
                 if done:
                     # We are in a terminal state but the agent hasn't yet seen it. We therefore
                     # perform one more forward-backward call and simply ignore the action before
