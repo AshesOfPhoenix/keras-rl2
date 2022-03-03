@@ -235,6 +235,7 @@ class Agent:
                         'episode_reward': episode_reward,
                         'nb_episode_steps': episode_step,
                         'nb_steps': self.step,
+                        'nb_completed': env._comp_episode,
                     }
                     callbacks.on_episode_end(episode, episode_logs)
 
