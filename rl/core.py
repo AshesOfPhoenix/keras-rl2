@@ -199,9 +199,11 @@ class Agent:
                     reward += r
                     if done:
                         break
+                reached_max_steps = False
                 if nb_max_episode_steps and episode_step >= nb_max_episode_steps - 1:
                     # Force a terminal state.
                     done = True
+                    reached_max_steps = True
                 metrics = self.backward(reward, terminal=done)
                 episode_reward += reward
 
@@ -236,6 +238,7 @@ class Agent:
                         'nb_episode_steps': episode_step,
                         'nb_steps': self.step,
                         'nb_completed': env._comp_episode,
+                        'nb_reached_max_steps': reached_max_steps,
                     }
                     callbacks.on_episode_end(episode, episode_logs)
 
