@@ -246,7 +246,8 @@ class TrainIntervalLogger(Callback):
         self.infos = []
         self.info_names = None
         self.episode_rewards = []
-        self.env.comp_episodes_interval = 0
+        if(self.step > 10):
+            self.env.comp_episodes_interval = 0
 
     def on_train_begin(self, logs):
         """ Initialize training statistics at beginning of training """
