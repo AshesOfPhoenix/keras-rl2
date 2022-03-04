@@ -232,12 +232,11 @@ class TrainEpisodeLogger(Callback):
 
 
 class TrainIntervalLogger(Callback):
-    def __init__(self, env, interval=10000):
+    def __init__(self, interval=10000):
         self.interval = interval
         self.step = 0
         self.reset()
         self.best_episode_mean = -1000
-        self.env = env
 
     def reset(self):
         """ Reset statistics """
