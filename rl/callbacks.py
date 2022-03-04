@@ -285,7 +285,7 @@ class TrainIntervalLogger(Callback):
                         for name, mean in zip(self.info_names, means):
                             formatted_infos += f' - {name}: {mean:.3f}'
    
-                print(f'{len(self.episode_rewards)} episodes total, {self.env.comp_episodes_interval} successfull - episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
+                print(f'{len(self.episode_rewards)} episodes total, {self.env.comp_episodes_interval} successfull - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
             if(np.mean(self.episode_rewards) > self.best_episode_mean):
@@ -293,7 +293,7 @@ class TrainIntervalLogger(Callback):
             
             self.reset()
            
-            print('|| Best mean episode_reward per iterval so far: {mean:.3f}                           ||'.format(mean=self.best_episode_mean))
+            print('|| Best mean episode_reward per iterval so far: {mean:.3f}                     ||'.format(mean=self.best_episode_mean))
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
