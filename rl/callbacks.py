@@ -232,11 +232,12 @@ class TrainEpisodeLogger(Callback):
 
 
 class TrainIntervalLogger(Callback):
-    def __init__(self, interval=10000):
+    def __init__(self, env, interval=10000):
         self.interval = interval
         self.step = 0
         self.reset()
         self.best_episode_mean = -1000
+        self.env = env
 
     def reset(self):
         """ Reset statistics """
@@ -246,6 +247,7 @@ class TrainIntervalLogger(Callback):
         self.infos = []
         self.info_names = None
         self.episode_rewards = []
+        self.env.comp_episodes_interval = 0
 
     def on_train_begin(self, logs):
         """ Initialize training statistics at beginning of training """
@@ -291,7 +293,7 @@ class TrainIntervalLogger(Callback):
             
             self.reset()
            
-            print('|| Best mean episode_reward per iterval so far: {mean:.3f}                                                            ||'.format(mean=self.best_episode_mean))
+            print('|| Best mean episode_reward per iterval so far: {mean:.3f}, {self.env.comp_episodes_interval} episodes completed last interval                           ||'.format(mean=self.best_episode_mean))
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')

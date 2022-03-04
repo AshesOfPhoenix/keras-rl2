@@ -90,7 +90,7 @@ class Agent:
         callbacks = [] if not callbacks else callbacks[:]
 
         if verbose == 1:
-            callbacks += [TrainIntervalLogger(interval=log_interval)]
+            callbacks += [TrainIntervalLogger(env=env, interval=log_interval)]
         elif verbose > 1:
             callbacks += [TrainEpisodeLogger()]
         if visualize:
