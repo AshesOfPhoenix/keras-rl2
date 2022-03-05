@@ -286,7 +286,9 @@ class TrainIntervalLogger(Callback):
                         assert means.shape == (len(self.info_names),)
                         for name, mean in zip(self.info_names, means):
                             formatted_infos += f' - {name}: {mean:.3f}'
-                success_percent = (len(self.episode_rewards) / self.env.comp_episodes_interval) * 100
+                success_percent = 0.0
+                if(self.env.comp_episodes_interval > 0):
+                    success_percent = (len(self.episode_rewards) / self.env.comp_episodes_interval) * 100
                 print(f'{len(self.episode_rewards)} episodes total, {self.env.comp_episodes_interval} successfull ({success_percent:.1f}%) - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
