@@ -237,6 +237,7 @@ class TrainIntervalLogger(Callback):
         self.step = 0
         self.reset()
         self.best_episode_mean = -1000
+        self.best_comp_ep_per_interval = 0
 
     def reset(self):
         """ Reset statistics """
@@ -246,6 +247,7 @@ class TrainIntervalLogger(Callback):
         self.infos = []
         self.info_names = None
         self.episode_rewards = []
+        
         if(self.step > 10):
             self.env.comp_episodes_interval = 0
 
@@ -284,16 +286,18 @@ class TrainIntervalLogger(Callback):
                         assert means.shape == (len(self.info_names),)
                         for name, mean in zip(self.info_names, means):
                             formatted_infos += f' - {name}: {mean:.3f}'
-   
-                print(f'{len(self.episode_rewards)} episodes total, {self.env.comp_episodes_interval} successfull - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
+                success_percent = (len(self.episode_rewards) / self.env.comp_episodes_interval) * 100
+                print(f'{len(self.episode_rewards)} episodes total, {self.env.comp_episodes_interval} successfull ({success_percent:.1f}%) - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
             if(np.mean(self.episode_rewards) > self.best_episode_mean):
                 self.best_episode_mean = np.mean(self.episode_rewards)
+            if(self.env.comp_episodes_interval > self.best_comp_ep_per_interval):
+                self.best_comp_ep_per_interval = self.env.comp_episodes_interval
             
             self.reset()
            
-            print('|| Best mean episode_reward per iterval so far: {mean:.3f}                     ||'.format(mean=self.best_episode_mean))
+            print('|| Best mean episode_reward per iterval so far: {mean:.3f}, Most completed episodes per interval: {comp_ep}                     ||'.format(mean=self.best_episode_mean, comp_ep=self.best_comp_ep_per_interval))
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
