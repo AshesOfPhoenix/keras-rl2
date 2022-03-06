@@ -251,7 +251,7 @@ class TrainIntervalLogger(Callback):
         self.episode_rewards = []
         
         if(self.step > 10):
-            self.env.comp_episodes_interval = 0
+            self.env._comp_episodes_interval = 0
 
     def on_train_begin(self, logs):
         """ Initialize training statistics at beginning of training """
@@ -289,16 +289,16 @@ class TrainIntervalLogger(Callback):
                         for name, mean in zip(self.info_names, means):
                             formatted_infos += f' - {name}: {mean:.3f}'
                 success_percent = 0.0
-                if(self.env.comp_episodes_interval > 0 and len(self.episode_rewards) > 0):
-                    success_percent = (self.env.comp_episodes_interval / len(self.episode_rewards)) * 100
-                print(f'{len(self.episode_rewards)} episodes total, {self.env.comp_episodes_interval} successfull ({success_percent:.1f}%) - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
+                if(self.env._comp_episodes_interval > 0 and len(self.episode_rewards) > 0):
+                    success_percent = (self.env._comp_episodes_interval / len(self.episode_rewards)) * 100
+                print(f'{len(self.episode_rewards)} episodes total, {self.env._comp_episodes_interval} successfull ({success_percent:.1f}%) - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
             if(np.mean(self.episode_rewards) > self.best_episode_mean):
                 self.best_episode_mean = np.mean(self.episode_rewards)
                 self.best_episode_mean_interval = self.step // self.interval + 1
-            if(self.env.comp_episodes_interval > self.best_comp_ep_per_interval):
-                self.best_comp_ep_per_interval = self.env.comp_episodes_interval
+            if(self.env._comp_episodes_interval > self.best_comp_ep_per_interval):
+                self.best_comp_ep_per_interval = self.env._comp_episodes_interval
                 self.best_comp_ep_per_interval_interval = self.step // self.interval
             
             self.reset()
