@@ -299,15 +299,18 @@ class TrainIntervalLogger(Callback):
                 self.best_episode_mean_interval = self.step // self.interval + 1
             if(self.env.comp_episodes_interval > self.best_comp_ep_per_interval):
                 self.best_comp_ep_per_interval = self.env.comp_episodes_interval
-                self.best_comp_ep_per_interval_interval = self.step // self.interval + 1
+                self.best_comp_ep_per_interval_interval = self.step // self.interval
             
             self.reset()
            
             print('|| Best mean episode_reward per iterval so far: {mean:.3f} (Interval: {interval})                                         ||'.format(mean=self.best_episode_mean, interval=self.best_episode_mean_interval))
-            print('|| Most completed episodes per interval: {comp_ep} (Interval: {interval})                                                       ||'.format(comp_ep=self.best_comp_ep_per_interval, interval=self.best_comp_ep_per_interval_interval))
+            print('|| Most completed episodes per interval: {comp_ep} (Interval: {interval})                                                      ||'.format(comp_ep=self.best_comp_ep_per_interval, interval=self.best_comp_ep_per_interval_interval))
+            if(self.env.was_pos_reset):
+                print('|| Car position was shuffled                                                              ||')
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
+            self.env.was_pos_reset = False
                                                                                                                                                                      
     def on_step_end(self, step, logs):
         """ Update progression bar at the end of each step """
