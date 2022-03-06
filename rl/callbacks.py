@@ -304,9 +304,9 @@ class TrainIntervalLogger(Callback):
             self.reset()
            
             print('|| Best mean episode_reward per iterval so far: {mean:.3f} (Interval: {interval})                                         ||'.format(mean=self.best_episode_mean, interval=self.best_episode_mean_interval))
-            print('|| Most completed episodes per interval: {comp_ep} (Interval: {interval}, Episode: {epiz}, Step: {stepz})                                                      ||'.format(comp_ep=self.best_comp_ep_per_interval, interval=self.best_comp_ep_per_interval_interval, epiz=len(self.episode_rewards), stepz=self.step))
+            print('|| Most completed episodes per interval: {comp_ep} (Interval: {interval}, Episode: {epiz}, Step: {stepz})                                                      ||'.format(comp_ep=self.best_comp_ep_per_interval, interval=self.best_comp_ep_per_interval_interval, epiz=self.env._episode_count, stepz=self.step))
             if(self.env.was_pos_reset):
-                print('|| Car position was shuffled                                                              ||')
+                print('|| Car position was shuffled                                                                          ||')
             print("\/-------------------------------------------------------------------------------------------------------------\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
