@@ -296,7 +296,10 @@ class TrainIntervalLogger(Callback):
                 success_percent = 0.0
                 if(self.env._comp_episodes_interval > 0 and len(self.episode_rewards) > 0):
                     success_percent = (self.env._comp_episodes_interval / len(self.episode_rewards)) * 100
-                print(f'{len(self.episode_rewards)} episodes total, {self.env._comp_episodes_interval} successfull ({success_percent:.1f}%) - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
+                performance = 0.0
+                if(self.env._comp_episodes_interval > 0 and len(self.env._comp_episodes_interval_step_log) > 0):    
+                    performance = self.env._comp_episodes_interval / np.mean(self.env._comp_episodes_interval_step_log)
+                print(f'{len(self.episode_rewards)} episodes total, {self.env._comp_episodes_interval} successfull ({success_percent:.1f}%) - Performance: {performance:.1f} - mean episode_reward: {np.mean(self.episode_rewards):.3f} [{np.min(self.episode_rewards):.3f}, {np.max(self.episode_rewards):.3f}]{formatted_metrics}{formatted_infos}')
                 print("\\                                                                                                               / ")                                                                                        
                 print("/\-------------------------------------------------------------------------------------------------------------/\\")
             if(np.mean(self.episode_rewards) > self.log_metrics['best_episode_mean']):
@@ -323,6 +326,8 @@ class TrainIntervalLogger(Callback):
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
             self.env.was_pos_reset = False
+            self.env._comp_episodes_interval = 0
+            self._comp_episodes_interval_step_log.clear()
                                                                                                                                                                      
     def on_step_end(self, step, logs):
         """ Update progression bar at the end of each step """
