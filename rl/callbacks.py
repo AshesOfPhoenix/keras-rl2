@@ -307,8 +307,10 @@ class TrainIntervalLogger(Callback):
                 self.log_metrics['total_ep'] = len(self.episode_rewards)
                 self.log_metrics['most_comp_ep_interval'] = self.step // self.interval
                 self.log_metrics['most_comp_ep_interval_step'] = self.step
-                self.log_metrics['success_percent_top'] = (self.env._comp_episodes_interval / len(self.episode_rewards)) * 100
-                self.log_metrics['interval_performance'] = self.env._comp_episodes_interval / np.mean(self.env._comp_episodes_interval_step_log)
+                if(len(self.episode_rewards) > 0):
+                    self.log_metrics['success_percent_top'] = (self.env._comp_episodes_interval / len(self.episode_rewards)) * 100
+                if(len(self.env._comp_episodes_interval_step_log) > 0):
+                    self.log_metrics['interval_performance'] = self.env._comp_episodes_interval / np.mean(self.env._comp_episodes_interval_step_log)
             
             self.reset()
            
