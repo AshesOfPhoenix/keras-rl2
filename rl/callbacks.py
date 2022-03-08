@@ -315,13 +315,14 @@ class TrainIntervalLogger(Callback):
                 if(len(self.env._comp_episodes_interval_step_log) > 0):
                     self.log_metrics['interval_performance'] = self.env._comp_episodes_interval / np.mean(self.env._comp_episodes_interval_step_log)
             
+            
             self.reset()
            
             print('|| Best mean episode_reward per iterval so far: {mean:.3f} (Interval: {interval})                                         ||'.format(mean=self.log_metrics['best_episode_mean'], interval=self.log_metrics['best_episode_mean_interval']))
             print('|| Most completed episodes per interval: {comp_ep} (Total ep.: {total}) with a total success rate: {rate:.1f}%.                   ||'.format(comp_ep=self.log_metrics['most_comp_ep'], total=self.log_metrics['total_ep'], rate=self.log_metrics['success_percent_top']))
             print('|| With performance: {performance:.3f} [Interval: {interval}, Episode: {epiz}, Step: {stepz}]                               ||'.format(performance=self.log_metrics['interval_performance'], interval=self.log_metrics['most_comp_ep_interval'], epiz=self.env._episode_count, stepz=self.log_metrics['most_comp_ep_interval_step']))
             if(self.env.was_pos_reset):
-                print('|| CAR POSTION WAS SHUFFLED ON STEP: {step}, EPISODE: {episode}                                                                 ||'.format(step=self.step, episode=len(self.episode_rewards)))
+                print('|| CAR POSTION WAS SHUFFLED ON STEP: {step}, EPISODE: {episode}                                                                 ||'.format(step=self.step, episode=len(self.env.shuffle_episode)))
             print("\/=============================================================================================================\/")
             print("/                                                                                                               \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
