@@ -327,7 +327,7 @@ class TrainIntervalLogger(Callback):
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
             self.env.was_pos_reset = False
             self.env._comp_episodes_interval = 0
-            self._comp_episodes_interval_step_log.clear()
+            self.env._comp_episodes_interval_step_log.clear()
                                                                                                                                                                      
     def on_step_end(self, step, logs):
         """ Update progression bar at the end of each step """
