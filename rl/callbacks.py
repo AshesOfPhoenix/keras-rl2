@@ -319,11 +319,11 @@ class TrainIntervalLogger(Callback):
             self.reset()
            
             print('|| Best mean episode_reward per iterval so far: {mean:.3f} (Interval: {interval})                                                   ||'.format(mean=self.log_metrics['best_episode_mean'], interval=self.log_metrics['best_episode_mean_interval']))
-            print('|| Most completed episodes per interval: {comp_ep} with avg steps of: {avg_steps:.1f} (Total ep.: {total}) with a total success rate: {rate:.1f}%.        ||'.format(comp_ep=self.log_metrics['most_comp_ep'], avg_steps=np.mean(self.env._comp_episodes_interval_step_log), total=self.log_metrics['total_ep'], rate=self.log_metrics['success_percent_top']))
-            print('|| With performance: {performance:.3f} [Interval: {interval}, Episode: {epiz}, Step: {stepz}]                                                         ||'.format(performance=self.log_metrics['interval_performance'], interval=self.log_metrics['most_comp_ep_interval'], epiz=self.env._episode_count, stepz=self.log_metrics['most_comp_ep_interval_step']))
+            print('|| Most completed episodes per interval: {comp_ep} with avg steps of: {avg_steps:.1f} (Total ep.: {total}) with a total success rate: {rate:.1f}%.       ||'.format(comp_ep=self.log_metrics['most_comp_ep'], avg_steps=np.mean(self.env._comp_episodes_interval_step_log), total=self.log_metrics['total_ep'], rate=self.log_metrics['success_percent_top']))
+            print('|| With performance: {performance:.3f} [Interval: {interval}, Episode: {epiz}, Step: {stepz}]                                                     ||'.format(performance=self.log_metrics['interval_performance'], interval=self.log_metrics['most_comp_ep_interval'], epiz=self.env._episode_count, stepz=self.log_metrics['most_comp_ep_interval_step']))
             if(self.env.was_pos_reset):
                 cur_step = self.step - 5000
-                print('|| CAR POSTION WAS SHUFFLED ON STEP: {step}, EPISODE: {episode}                                                                   ||'.format(step=cur_step, episode=self.env.shuffle_episode))
+                print('|| CAR POSTION WAS SHUFFLED ON STEP: {step}, EPISODE: {episode}                                                                 ||'.format(step=cur_step, episode=self.env.shuffle_episode))
             print("\/========================================================================================================================\/")
             print("/                                                                                                                          \\")                                                                                                                                 
             print(f'Interval {self.step // self.interval + 1} ({self.step} steps performed so far)')
